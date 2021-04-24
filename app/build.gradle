@@ -28,6 +28,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    buildFeatures{
+        viewBinding true
+    }
 }
 
 def htextview_version = "0.1.6"
@@ -46,6 +50,7 @@ dependencies {
     implementation "com.hanks:htextview-typer:$htextview_version"
 
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
+    implementation 'net.steamcrafted:materialiconlib:1.1.5'
 
 
 }
