@@ -4,24 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".AddArticle">
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textField"
+    <EditText
+        android:id="@+id/article_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_margin="10dp"
-        android:hint="Enter the Title">
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:fontFamily="@font/bungee"
+        android:hapticFeedbackEnabled="false"
+        android:hint="Enter the Title"
+        android:inputType="textMultiLine"
+        android:maxLines="2" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
+    <EditText
+        android:id="@+id/article_description"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:fontFamily="sans-serif-condensed-light"
+        android:gravity="start|right"
+        android:hint="Enter the Description"
+        android:inputType="textMultiLine|text" />
 </LinearLayout>
