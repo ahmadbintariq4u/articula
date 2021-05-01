@@ -3,6 +3,8 @@ package com.comsats.articular;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,9 @@ public class AddArticle extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAddArticleBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+
     }
 
 
