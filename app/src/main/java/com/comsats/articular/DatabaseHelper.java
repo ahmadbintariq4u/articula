@@ -8,10 +8,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
     Context context;
@@ -34,11 +38,23 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
 
-    public void saveData(){
+    public void insertData(ArrayList<String> data){
 
         ContentValues contentValues=new ContentValues();
-        contentValues.put("title","Shaper");
-        contentValues.put("description","as");
+        // pushing image.
+        Bitmap img=null;
+        try {
+            img = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(data.get(0)));
+            contentValues.put("pic",getBitmapAsByteArray(img));
+        } catch (IOException e) {
+            contentValues.put("pic","");
+        }
+
+        contentValues.put("title",data.get(1));
+        contentValues.put("author",data.get(2));
+        contentValues.put("description",data.get(3));
+        contentValues.put("date_created",data.get(4));
+        contentValues.put("date_modified",data.get(5));
 
         SQLiteDatabase db=getWritableDatabase();
         db.insert("article",null,contentValues);
@@ -68,27 +84,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
 
-    public void insertImg() {
-
-        Bitmap img = BitmapFactory.decodeResource(context.getResources(), R.drawable.add);
-        byte[] data = getBitmapAsByteArray(img); // this is a function
-
-        SQLiteDatabase db=getWritableDatabase();
-        ContentValues contentValues=new ContentValues();
-        contentValues.put("pic",data);
-        contentValues.put("title","ta");
-        db.insert("article",null,contentValues);
-        db.close();
-        Toast.makeText(context, "Inserted SAuccesfully", Toast.LENGTH_SHORT).show();
-
-    }
-
     public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();
     }
-
 
 }
 
