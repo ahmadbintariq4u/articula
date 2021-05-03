@@ -26,6 +26,7 @@ import java.io.InputStream;
 public class HomeActivity extends AppCompatActivity {
 
     public ActivityHomeBinding binding;
+    public static DatabaseHelper database=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,8 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        // initialize database
+        database=new DatabaseHelper(getApplicationContext());
     }
 
 

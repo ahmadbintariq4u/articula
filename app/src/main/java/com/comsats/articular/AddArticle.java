@@ -55,7 +55,6 @@ public class AddArticle extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.new_article_menu, menu);
@@ -68,12 +67,9 @@ public class AddArticle extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        Toast.makeText(this, "You click on " + item.getTitle(), Toast.LENGTH_SHORT).show();
-
         articleData = new ArrayList<String>();
 
         if (item.getTitle().equals("add")) {
-
 
             articleData.add(imageURI);  //0
             articleData.add(binding.articleTitle.getText().toString()); //1
@@ -91,6 +87,15 @@ public class AddArticle extends AppCompatActivity {
             articleData.add(currentDateTime); // new modified date.  //5
 
             // Further add it into the Database.
+
+            HomeActivity.database.insertData(articleData);
+
+//            Intent intent=new Intent(this,HomeActivity.class);
+//            startActivity(intent);
+//            finish();
+
+        }else if(item.getTitle().equals("cancel")){
+            Toast.makeText(this, "You click on cancel" , Toast.LENGTH_SHORT).show();
         }
 
         return true;

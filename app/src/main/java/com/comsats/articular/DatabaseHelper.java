@@ -1,5 +1,6 @@
 package com.comsats.articular;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,7 +19,7 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
-    Context context;
+    public Context context;
     public DatabaseHelper(Context context) {
         super(context,"Article_Database",null,1);
         this.context=context;
@@ -40,26 +41,34 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public void insertData(ArrayList<String> data){
 
-        ContentValues contentValues=new ContentValues();
-        // pushing image.
-        Bitmap img=null;
         try {
-            img = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(data.get(0)));
-            contentValues.put("pic",getBitmapAsByteArray(img));
-        } catch (IOException e) {
-            contentValues.put("pic","");
+            ContentValues contentValues = new ContentValues();
+            // pushing image.
+            Bitmap img = null;
+            try {
+                img = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(data.get(0)));
+                contentValues.put("pic", getBitmapAsByteArray(img));
+
+            } catch (Exception e) {
+                img= BitmapFactory.decodeResource(context.getResources(),R.drawable.questionmark);
+                contentValues.put("pic", getBitmapAsByteArray(img));
+            }
+            contentValues.put("title", data.get(1));
+            contentValues.put("author", data.get(2));
+            contentValues.put("description", data.get(3));
+            contentValues.put("date_created", data.get(4));
+            contentValues.put("date_modified", data.get(5));
+
+            SQLiteDatabase db = getWritableDatabase();
+            db.insert("article", null, contentValues);
+            db.close();
+
+            Toast.makeText(context, "Data inserted Successfully", Toast.LENGTH_SHORT).show();
+
+        }catch (Exception e){
+           // Toast.makeText(context, ""+e.getMessage()+" "+e.getStackTrace()[0]+"\n"+e.getStackTrace()[0], Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
-
-        contentValues.put("title",data.get(1));
-        contentValues.put("author",data.get(2));
-        contentValues.put("description",data.get(3));
-        contentValues.put("date_created",data.get(4));
-        contentValues.put("date_modified",data.get(5));
-
-        SQLiteDatabase db=getWritableDatabase();
-        db.insert("article",null,contentValues);
-        db.close();
-
     }
 
 
@@ -79,7 +88,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
         return null;
-
 
     }
 
