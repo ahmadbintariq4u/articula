@@ -45,7 +45,7 @@ public class AddArticle extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            //TODO: action
+
             if (data != null) {
                 binding.articlePic.setImageURI(data.getData());
                 imageURI = data.getData().toString();
@@ -72,30 +72,38 @@ public class AddArticle extends AppCompatActivity {
         if (item.getTitle().equals("add")) {
 
             articleData.add(imageURI);  //0
-            articleData.add(binding.articleTitle.getText().toString()); //1
-            String author = binding.articleAuthor.getText().toString();
+            try {
 
-            // 2
-            if (!author.equals(""))
-                articleData.add(author);
-            else
-                articleData.add("Unknown.");
+                String title = binding.articleTitle.getText().toString();
+                if (title.equals(""))
+                    throw new NullPointerException();
+                else
+                    articleData.add(binding.articleTitle.getText().toString()); //1
 
-            articleData.add(binding.articleDescription.getText().toString()); //3
-            String currentDateTime = new SimpleDateFormat("h:mm a dd/MM/yyyy", Locale.getDefault()).format(new Date());
-            articleData.add(currentDateTime); //4
-            articleData.add(currentDateTime); // new modified date.  //5
 
-            // Further add it into the Database.
+                String author = binding.articleAuthor.getText().toString();
+                // 2
+                if (!author.equals(""))
+                    articleData.add(author);
+                else
+                    articleData.add("Unknown.");
 
-            HomeActivity.database.insertData(articleData);
+                articleData.add(binding.articleDescription.getText().toString()); //3
+                String currentDateTime = new SimpleDateFormat("h:mm a dd/MM/yyyy", Locale.getDefault()).format(new Date());
+                articleData.add(currentDateTime); //4
+                articleData.add(currentDateTime); // new modified date.  //5
 
-//            Intent intent=new Intent(this,HomeActivity.class);
-//            startActivity(intent);
-//            finish();
+                // Further add it into the Database.
 
-        }else if(item.getTitle().equals("cancel")){
-            Toast.makeText(this, "You click on cancel" , Toast.LENGTH_SHORT).show();
+                HomeActivity.database.insertData(articleData);
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            } catch (NullPointerException e) {
+                Toast.makeText(this, "Title not be null", Toast.LENGTH_SHORT).show();
+            }
+        } else if (item.getTitle().equals("cancel")) {
+            onBackPressed();
         }
 
         return true;

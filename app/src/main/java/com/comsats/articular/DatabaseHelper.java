@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int naewVersion) {
 
     }
 
@@ -53,6 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 img= BitmapFactory.decodeResource(context.getResources(),R.drawable.questionmark);
                 contentValues.put("pic", getBitmapAsByteArray(img));
             }
+
             contentValues.put("title", data.get(1));
             contentValues.put("author", data.get(2));
             contentValues.put("description", data.get(3));
@@ -71,24 +72,27 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
     }
 
+    public ArrayList<String>[] recievedData=null;
+    public ArrayList<String>[] retrieveData(){
 
-    public Bitmap retrieveData(){
+        recievedData=null;
 
-        String qu = "select * from article where title=\"ta\"";
-        SQLiteDatabase db=getReadableDatabase();
-        Cursor cur = db.rawQuery(qu, null);
+        SQLiteDatabase database=getReadableDatabase();
+        Cursor cursor=database.rawQuery("select * from article",null);
+        recievedData=new ArrayList[cursor.getCount()];
+        while(cursor.moveToNext()){
 
-        if (cur.moveToFirst()){
-            byte[] imgByte = cur.getBlob(6);
-            cur.close();
-            return BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+            recievedData[cursor.getPosition()]=new ArrayList<String>();
+            recievedData[cursor.getPosition()].add(cursor.getString(1));  // author
+            recievedData[cursor.getPosition()].add(cursor.getString(2));  // title
+            recievedData[cursor.getPosition()].add(cursor.getString(3)); // description
+            recievedData[cursor.getPosition()].add(cursor.getString(4)); // date_created
+            recievedData[cursor.getPosition()].add(cursor.getString(5)); // date_modified
+            recievedData[cursor.getPosition()].add(new String(cursor.getBlob(6))); // pic
+
         }
-        if (cur != null && !cur.isClosed()) {
-            cur.close();
-        }
 
-        return null;
-
+        return recievedData;
     }
 
 

@@ -22,6 +22,7 @@ import com.comsats.articular.databinding.ActivityHomeBinding;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -44,6 +45,17 @@ public class HomeActivity extends AppCompatActivity {
 
         // initialize database
         database=new DatabaseHelper(getApplicationContext());
+
+        // Retrieved data from the database.
+        retrieved();
+
+    }
+
+    private void retrieved() {
+
+        ArrayList<String>[] data=database.retrieveData();
+
+
     }
 
 

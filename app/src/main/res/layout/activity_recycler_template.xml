@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/activity_recycler_template_pic"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:foregroundGravity="fill"
+        android:maxWidth="200dp"
+        android:maxHeight="200dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/questionmark" />
+
+    <TextView
+        android:id="@+id/activity_recycler_template_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_recycler_template_pic"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:clickable="false"
+        android:fontFamily="@font/carter_one"
+        android:gravity="center"
+        android:maxLines="2"
+        android:text="TextView"
+        android:textSize="16sp"
+        tools:text="This is a deme data for just the testting pupose and to make the title looks better." />
+
+    <LinearLayout
+        android:id="@+id/activity_recycler_template_layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/activity_recycler_template_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="right"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/activity_recycler_template_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caveat_bold"
+            android:text="Ahmad Tariq" />
+    </LinearLayout>
+
+</RelativeLayout>
