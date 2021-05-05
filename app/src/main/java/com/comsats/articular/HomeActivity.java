@@ -47,7 +47,8 @@ public class HomeActivity extends AppCompatActivity {
         database=new DatabaseHelper(getApplicationContext());
 
         // Retrieved data from the database.
-        retrieved();
+        //retrieved();
+        //database.deleteAll();
 
     }
 

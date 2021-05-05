@@ -19,10 +19,12 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+
     public Context context;
+    private String TABLE_NAME="article";
 
     public DatabaseHelper(Context context) {
-        super(context, "Article_Database", null, 1);
+        super(context, "Article_Database", null, 2);
         this.context = context;
     }
 
@@ -30,13 +32,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE article (id integer primary key autoincrement,author text," +
                 "title text not null,description text,date_created text," +
-                "date_modified text,pic blob);";
+                "date_modified text,pic text);";
         db.execSQL(query);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int naewVersion) {
-
+            onCreate(db);
     }
 
 
@@ -44,17 +46,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         try {
             ContentValues contentValues = new ContentValues();
-            // pushing image.
-            Bitmap img = null;
-            try {
-                img = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(data.get(0)));
-                contentValues.put("pic", getBitmapAsByteArray(img));
 
-            } catch (Exception e) {
-                img = BitmapFactory.decodeResource(context.getResources(), R.drawable.questionmark);
-                contentValues.put("pic", getBitmapAsByteArray(img));
-            }
-
+            contentValues.put("pic", data.get(0));
             contentValues.put("title", data.get(1));
             contentValues.put("author", data.get(2));
             contentValues.put("description", data.get(3));
@@ -90,21 +83,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             recievedData[cursor.getPosition()].add(cursor.getString(3)); // description
             recievedData[cursor.getPosition()].add(cursor.getString(4)); // date_created
             recievedData[cursor.getPosition()].add(cursor.getString(5)); // date_modified
-            if (cursor.getBlob(6) != null)
-                recievedData[cursor.getPosition()].add(new String(cursor.getBlob(6))); // pic
-            else
-                recievedData[cursor.getPosition()].add(null); // pic
+            recievedData[cursor.getPosition()].add(cursor.getString(6)); // pic
         }
 
         return recievedData;
     }
 
 
-    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-        return outputStream.toByteArray();
+    public void deleteAll()
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("delete from "+ TABLE_NAME);
+        db.close();
     }
+
+    public void dropTable()
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("drop table "+ TABLE_NAME);
+        db.close();
+    }
+
+
+
 
 }
 

@@ -99,6 +99,7 @@ public class AddArticle extends AppCompatActivity {
                 Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
                 finish();
+
             } catch (NullPointerException e) {
                 Toast.makeText(this, "Title not be null", Toast.LENGTH_SHORT).show();
             }
