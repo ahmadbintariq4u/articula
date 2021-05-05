@@ -18,19 +18,20 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-public class DatabaseHelper extends SQLiteOpenHelper{
+public class DatabaseHelper extends SQLiteOpenHelper {
     public Context context;
+
     public DatabaseHelper(Context context) {
-        super(context,"Article_Database",null,1);
-        this.context=context;
+        super(context, "Article_Database", null, 1);
+        this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-            String query="CREATE TABLE article (id integer primary key autoincrement,author text," +
-                                                "title text not null,description text,date_created text," +
-                                                 "date_modified text,pic blob);";
-            db.execSQL(query);
+        String query = "CREATE TABLE article (id integer primary key autoincrement,author text," +
+                "title text not null,description text,date_created text," +
+                "date_modified text,pic blob);";
+        db.execSQL(query);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
 
-    public void insertData(ArrayList<String> data){
+    public void insertData(ArrayList<String> data) {
 
         try {
             ContentValues contentValues = new ContentValues();
@@ -50,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 contentValues.put("pic", getBitmapAsByteArray(img));
 
             } catch (Exception e) {
-                img= BitmapFactory.decodeResource(context.getResources(),R.drawable.questionmark);
+                img = BitmapFactory.decodeResource(context.getResources(), R.drawable.questionmark);
                 contentValues.put("pic", getBitmapAsByteArray(img));
             }
 
@@ -66,30 +67,33 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
             Toast.makeText(context, "Data inserted Successfully", Toast.LENGTH_SHORT).show();
 
-        }catch (Exception e){
-           // Toast.makeText(context, ""+e.getMessage()+" "+e.getStackTrace()[0]+"\n"+e.getStackTrace()[0], Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            // Toast.makeText(context, ""+e.getMessage()+" "+e.getStackTrace()[0]+"\n"+e.getStackTrace()[0], Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
 
-    public ArrayList<String>[] recievedData=null;
-    public ArrayList<String>[] retrieveData(){
+    public ArrayList<String>[] recievedData = null;
 
-        recievedData=null;
+    public ArrayList<String>[] retrieveData() {
 
-        SQLiteDatabase database=getReadableDatabase();
-        Cursor cursor=database.rawQuery("select * from article",null);
-        recievedData=new ArrayList[cursor.getCount()];
-        while(cursor.moveToNext()){
+        recievedData = null;
 
-            recievedData[cursor.getPosition()]=new ArrayList<String>();
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor cursor = database.rawQuery("select * from article", null);
+        recievedData = new ArrayList[cursor.getCount()];
+        while (cursor.moveToNext()) {
+
+            recievedData[cursor.getPosition()] = new ArrayList<String>();
             recievedData[cursor.getPosition()].add(cursor.getString(1));  // author
             recievedData[cursor.getPosition()].add(cursor.getString(2));  // title
             recievedData[cursor.getPosition()].add(cursor.getString(3)); // description
             recievedData[cursor.getPosition()].add(cursor.getString(4)); // date_created
             recievedData[cursor.getPosition()].add(cursor.getString(5)); // date_modified
-            recievedData[cursor.getPosition()].add(new String(cursor.getBlob(6))); // pic
-
+            if (cursor.getBlob(6) != null)
+                recievedData[cursor.getPosition()].add(new String(cursor.getBlob(6))); // pic
+            else
+                recievedData[cursor.getPosition()].add(null); // pic
         }
 
         return recievedData;
