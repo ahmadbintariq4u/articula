@@ -15,9 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_weight="5"
-        android:maxWidth="200dp"
-        android:maxHeight="200dp"
+        android:layout_weight="4"
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/questionmark" />
 

@@ -56,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             SQLiteDatabase db = getWritableDatabase();
             db.insert("article", null, contentValues);
-            db.close();
+
 
             Toast.makeText(context, "Data inserted Successfully", Toast.LENGTH_SHORT).show();
 
@@ -75,6 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = getReadableDatabase();
         Cursor cursor = database.rawQuery("select * from article", null);
         recievedData = new ArrayList[cursor.getCount()];
+        System.out.println("length is : "+cursor.getCount());
         while (cursor.moveToNext()) {
 
             recievedData[cursor.getPosition()] = new ArrayList<String>();

@@ -3,6 +3,7 @@ package com.comsats.articular;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,6 +29,8 @@ public class HomeActivity extends AppCompatActivity {
 
     public ActivityHomeBinding binding;
     public static DatabaseHelper database=null;
+    private MyRecyclerAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +52,11 @@ public class HomeActivity extends AppCompatActivity {
         // Retrieved data from the database.
         //retrieved();
         //database.deleteAll();
+
+        binding.activityHomeRecycler.setLayoutManager(new LinearLayoutManager(this));
+        adapter=new MyRecyclerAdapter(this,database.retrieveData());
+        binding.activityHomeRecycler.setAdapter(adapter);
+
 
     }
 
