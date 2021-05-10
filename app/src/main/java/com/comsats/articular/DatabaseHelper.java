@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String TABLE_NAME="article";
 
     public DatabaseHelper(Context context) {
-        super(context, "Article_Database", null, 2);
+        super(context, "Article_Database", null, 4);
         this.context = context;
     }
 
@@ -32,13 +32,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE article (id integer primary key autoincrement,author text," +
                 "title text not null,description text,date_created text," +
-                "date_modified text,pic text);";
+                "date_modified text,pic blob);";
         db.execSQL(query);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int naewVersion) {
-            onCreate(db);
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("drop table article");
+        onCreate(db);
     }
 
 

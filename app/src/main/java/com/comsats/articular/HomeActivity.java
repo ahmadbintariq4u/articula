@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,12 +31,14 @@ public class HomeActivity extends AppCompatActivity {
     public ActivityHomeBinding binding;
     public static DatabaseHelper database=null;
     private MyRecyclerAdapter adapter;
-
+    public static Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        context=getApplicationContext();
 
         // set the listener to the FAB.
         binding.homeFab.setOnClickListener(new View.OnClickListener() {
@@ -84,4 +87,10 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.close();
+    }
 }

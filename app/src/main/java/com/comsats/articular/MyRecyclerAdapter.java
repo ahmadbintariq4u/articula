@@ -1,7 +1,11 @@
 package com.comsats.articular;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,8 +40,19 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Ar
     public void onBindViewHolder(@NonNull MyRecyclerAdapter.ArticleViewHolder holder, int position) {
         holder.author.setText(data[position].get(0));
         holder.title.setText(data[position].get(1));
-        if(!data[position].get(5).equals(""))
-        holder.pic.setImageURI(Uri.parse(data[position].get(5)));
+        if(data[position].get(5)!=null){
+
+            try{
+                byte [] encodeByte= Base64.decode(data[position].get(5),Base64.DEFAULT);
+                Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+                holder.pic.setImageBitmap(bitmap);
+                System.out.println("image successfluyy");
+            }catch(Exception e){
+                e.printStackTrace();
+                System.out.println("Facing issue");
+            }
+
+        }
         else
         holder.pic.setImageResource(R.drawable.questionmark);
 

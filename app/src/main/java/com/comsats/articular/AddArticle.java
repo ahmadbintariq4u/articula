@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,7 +13,6 @@ import android.widget.Toast;
 
 import com.comsats.articular.databinding.ActivityAddArticleBinding;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,15 +31,16 @@ public class AddArticle extends AppCompatActivity {
         binding.articlePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 1);
+                Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+                galleryIntent.setType("image/*, video/*");
+                if (galleryIntent.resolveActivity(getPackageManager())!= null) {
+                    startActivityForResult(Intent.createChooser(galleryIntent, "Select Your Pic"), 1);
+                }
             }
         });
     }
 
-    public String imageURI = null;
+    public Bitmap bitmapImage = null;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -47,11 +48,15 @@ public class AddArticle extends AppCompatActivity {
         if (requestCode == 1) {
 
             if (data != null) {
-                binding.articlePic.setImageURI(data.getData());
-                imageURI = data.getData().toString();
+                Bitmap image=null;
+                try {
+                    image = ImageUtilities.compessBitmap(HomeActivity.context,data.getData(),200);
+                }catch (Exception e){e.printStackTrace();}
+                bitmapImage = image;
+                binding.articlePic.setImageBitmap(image);
             }
         } else {
-            imageURI = null;
+            bitmapImage = null;
         }
     }
 
@@ -71,7 +76,7 @@ public class AddArticle extends AppCompatActivity {
 
         if (item.getTitle().equals("add")) {
 
-            articleData.add(imageURI);  //0
+            articleData.add(ImageUtilities.BitMapToString(bitmapImage));  //0
             try {
 
                 String title = binding.articleTitle.getText().toString();
